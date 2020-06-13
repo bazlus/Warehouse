@@ -1,0 +1,49 @@
+﻿@model Warehouse.Web.DTOs.SearchViewModel
+
+<div class="container-fluid">
+    <h2>Do we have it in stock? Not sure? Just Search for it!</h2>
+    <form class="form-group" asp-controller="Warehouse" asp-action="Search" method="post">
+        <div class="md-form active-pink active-pink-2 mb-3 mt-0 row">
+            <select class="form-control col-2" asp-for="Filter.CategoryId" asp-items="@(new SelectList(Model.Categories, "CategoryId", "Name"))">
+                <option>All</option>
+            </select>
+            <input asp-for="Filter.SearchText" class="form-control search-field col-6" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-danger col-1 search-btn" type="submit">Search</button>
+        </div>
+    </form>
+
+    <div class="col-10">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Min Quantity</th>
+                    <th scope="col">Ordrered Quantity</th>
+                    <th scope="col">Delivered Quantity</th>
+                    <th scope="col">Available Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <th scope="row">@product.ProductId</th>
+                        <td>@product.Name</td>
+                        <td>@product.Category.Name</td>
+                        <td>@product.MinQuantity</td>
+                        <td>@product.OrderedQuantity</td>
+                        <td>@product.DeliveredQuantity</td>
+                        <td>@product.AvailableQuantity</td>
+                        <td>@product.Price</td>
+                        <td>@product.Supplier.CompanyName</td>
+                        <td><a asp-controller="Warehouse" asp-action="ExportProduct" asp-route-id="@product.ProductId">Export Product</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
